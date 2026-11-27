@@ -1,0 +1,125 @@
+{
+  "all_clean": true,
+  "documents": [
+    {
+      "doc_id": "18-VBHN-VPQH-2026",
+      "errors": [],
+      "issues": [
+        {
+          "count": 1,
+          "kind": "article_local_disorder",
+          "severity": "warning"
+        },
+        {
+          "count": 1,
+          "kind": "article_number_gap",
+          "severity": "warning"
+        },
+        {
+          "count": 6,
+          "kind": "article_out_of_order",
+          "severity": "warning"
+        },
+        {
+          "count": 3,
+          "kind": "chapter_sequence_mismatch",
+          "severity": "warning"
+        },
+        {
+          "count": 4,
+          "kind": "chapter_token_unreadable",
+          "severity": "warning"
+        },
+        {
+          "count": 33,
+          "kind": "clause_out_of_order",
+          "severity": "warning"
+        },
+        {
+          "count": 17,
+          "kind": "point_duplicate",
+          "severity": "warning"
+        }
+      ],
+      "missing_articles": [
+        76,
+        77,
+        78,
+        79
+      ],
+      "node_count": 1103,
+      "node_id_unique": true,
+      "pages": 86,
+      "pdf": "data/raw/blld2019-18-vbhn-vpqh-2026-ocr.pdf",
+      "pdf_sha256": "a355822c461cfcf2319e52733889bb4319819c7eb0cd5bb73df9eed8a528ba6c",
+      "role": "consolidated",
+      "stats": {
+        "article": 216,
+        "article_gap_missing": 4,
+        "chapter": 17,
+        "clause": 595,
+        "point": 252,
+        "preamble_lines": 14,
+        "section": 23
+      }
+    },
+    {
+      "doc_id": "45-2019-QH14",
+      "errors": [],
+      "issues": [
+        {
+          "count": 2,
+          "kind": "article_heading_recovered",
+          "severity": "warning"
+        },
+        {
+          "count": 3,
+          "kind": "article_out_of_order",
+          "severity": "warning"
+        },
+        {
+          "count": 2,
+          "kind": "chapter_sequence_mismatch",
+          "severity": "warning"
+        },
+        {
+          "count": 5,
+          "kind": "chapter_token_unreadable",
+          "severity": "warning"
+        },
+        {
+          "count": 44,
+          "kind": "clause_out_of_order",
+          "severity": "warning"
+        },
+        {
+          "count": 24,
+          "kind": "point_duplicate",
+          "severity": "warning"
+        },
+        {
+          "count": 2,
+          "kind": "section_out_of_order",
+          "severity": "warning"
+        }
+      ],
+      "missing_articles": [],
+      "node_count": 1071,
+      "node_id_unique": true,
+      "pages": 83,
+      "pdf": "data/raw/blld2019-45-2019-qh14-goc-ocr.pdf",
+      "pdf_sha256": "83dd0566e8607d81937bb5d8d8abdf6ac589635b156433543e955ac927f6bb59",
+      "role": "original",
+      "stats": {
+        "article": 220,
+        "article_gap_missing": 0,
+        "chapter": 17,
+        "clause": 585,
+        "point": 228,
+        "preamble_lines": 11,
+        "section": 21
+      }
+    }
+  ],
+  "generated_at": "2026-11-27T19:29:00Z"
+}

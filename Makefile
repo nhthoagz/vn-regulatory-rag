@@ -5,7 +5,7 @@ export PYTHONUTF8 := 1
 UV ?= uv
 T ?=
 
-.PHONY: dirs setup lint leak test t check ocr ocr-force ocr-best ocr-metrics
+.PHONY: dirs setup lint leak parse-stats test t check ocr ocr-force ocr-best ocr-metrics
 
 OCR_JOBS ?= 4
 TESSDATA_BEST ?= $(HOME)/.local/share/tessdata_best
@@ -22,6 +22,9 @@ lint:
 
 leak:
 	$(UV) run python -m scripts.check_leak
+
+parse-stats:
+	$(UV) run python -m scripts.parse_stats
 
 test:
 	$(UV) run pytest
