@@ -38,7 +38,9 @@ sudo apt update && sudo apt install -y ocrmypdf tesseract-ocr tesseract-ocr-vie 
 Tất cả chạy trong WSL: `cd /mnt/e/Projects/vn-regulatory-rag`.
 
 `uv` nằm ở `~/.local/bin`, chỉ có trong PATH của **login shell**. Shell không-login (vd `wsl.exe -e bash script.sh`)
-phải thêm `export PATH="$HOME/.local/bin:$PATH"` ở đầu script.
+phải `source scripts/env.sh` ở đầu script; file này export `PATH`, `UV_PROJECT_ENVIRONMENT`,
+`HF_HOME`, `PYTHONUTF8`. Gọi `uv` trực tiếp mà không có 3 biến này sẽ tạo `.venv` ngay trong repo
+(sai, vì venv phải nằm trên ext4 tại `~/.venvs/vn-rag`).
 
 | Mục | Lệnh |
 |---|---|
