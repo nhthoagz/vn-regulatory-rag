@@ -1,0 +1,31 @@
+# secrets
+.env
+.env.local
+
+# raw law PDFs and every derived text form (never published)
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/SOURCES.md
+data/processed/
+data/index/
+
+# model weights / binaries
+*.pt
+*.onnx
+*.npy
+*.safetensors
+
+# logs
+logs/*.log
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.uv-cache/
+
+# os
+.DS_Store
+Thumbs.db

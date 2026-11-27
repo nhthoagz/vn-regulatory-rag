@@ -1,0 +1,36 @@
+[project]
+name = "vn-regulatory-rag"
+version = "0.1.0"
+description = "QA + calculation reference architecture over Vietnamese regulatory text (BLLD 2019)"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "pyyaml>=6.0",
+  "pydantic>=2.7",
+  "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.5",
+  "pytest>=8.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+  "realdata: needs OCR output under data/raw",
+  "model: downloads a HF embedding model",
+  "llm: needs a live LLM endpoint",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
