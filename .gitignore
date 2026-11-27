@@ -26,6 +26,11 @@ __pycache__/
 .venv/
 .uv-cache/
 
+# local scratch (agent temp files)
+.tmp_*.sh
+.msg
+.msg2
+
 # os
 .DS_Store
 Thumbs.db
