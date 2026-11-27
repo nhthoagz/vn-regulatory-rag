@@ -1,0 +1,56 @@
+{
+  "all_pass": true,
+  "documents": [
+    {
+      "doc_id": "45-2019-QH14",
+      "identity_marker": "45/2019/QH14",
+      "identity_page": 1,
+      "ok_ratio": 1.0,
+      "output": "data/raw/blld2019-45-2019-qh14-goc-best.pdf",
+      "output_sha256": "3bb067ded20a6b3b3c2fab8a2b3e04dbb48eb015eb740cac6866e280d3d83441",
+      "pages": 83,
+      "pages_ok": 83,
+      "pass": true,
+      "retried": false,
+      "review": "data/raw/review/blld2019-45-2019-qh14-goc.md",
+      "role": "original",
+      "run": {
+        "command": "ocrmypdf -l vie --rotate-pages --deskew --clean --invalidate-digital-signatures --jobs 4 --sidecar /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-45-2019-qh14-goc-best.txt /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-45-2019-qh14-goc.pdf /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-45-2019-qh14-goc-best.pdf",
+        "exit_code": 0,
+        "seconds": 154.0,
+        "stderr_tail": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Image optimization ratio: 2.55 savings: 60.7%",
+          "Total file size ratio: 0.96 savings: -4.5%",
+          "Output file is a PDF/A-2b (as expected)"
+        ],
+        "tessdata_prefix": "/home/nhthoagz/.local/share/tessdata_best"
+      },
+      "sidecar": "data/raw/blld2019-45-2019-qh14-goc-best.txt",
+      "skipped": false,
+      "source": "data/raw/blld2019-45-2019-qh14-goc.pdf",
+      "source_bytes": 5232503,
+      "source_sha256": "a0c0fcc3b9e040bcdcab70191f0ab95952183be94a6f5bc6424e8d3e85697139"
+    }
+  ],
+  "generated_at": "2026-11-27T09:21:01Z",
+  "settings": {
+    "invalidate_digital_signatures": true,
+    "jobs": 4,
+    "lang": "vie",
+    "min_chars": 50,
+    "min_ok_ratio": 0.95,
+    "suffix": "-best",
+    "tessdata_dir": "/home/nhthoagz/.local/share/tessdata_best"
+  },
+  "tool": {
+    "ocrmypdf": "16.13.0+dfsg1",
+    "pdftotext": "pdftotext version 26.01.0",
+    "tesseract": "tesseract 5.5.0"
+  },
+  "total_seconds": 155.1
+}

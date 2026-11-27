@@ -77,10 +77,20 @@ Node (Pydantic, `src/common/schema.py`):
 ### 6.1 OCR
 
 ```bash
-ocrmypdf -l vie --rotate-pages --deskew --clean --jobs 4 \
-  --sidecar <out>.txt <in>.pdf <out>-ocr.pdf
+ocrmypdf -l vie --rotate-pages --deskew --clean --invalidate-digital-signatures \
+  --jobs 4 --sidecar <out>.txt <in>.pdf <out>-ocr.pdf
 ```
 
+- Cả hai PDF nguồn **có chữ ký số** (ocrmypdf báo `DigitalSignatureError`), nên buộc phải bật
+  `--invalidate-digital-signatures`. Bản `*-ocr.pdf` chỉ là bản sao làm việc; file gốc trong
+  `data/raw/` không bị sửa (sha256 trong `SOURCES.md` xác nhận điều này).
+- Ocrmypdf 16.13 trên Ghostscript 10.6.x in cảnh báo lỗi mã hóa JPEG; chỉ là cảnh báo và được ghi
+  nguyên văn vào `results/ocr_report.json` (`tool` + `stderr_tail`), không được im lặng bỏ qua.
+- **Model**: dùng `tesseract-ocr-vie` (gói chuẩn). Đã so sánh với `tessdata_best` trên bản gốc và
+  kết quả không chứng minh best tốt hơn (xem `docs/checkpoints/CP-T00b-ocr.md`). Không đổi model;
+  lỗi ký tự được xử lý ở tầng parse theo §6.3.
+- Gate "≥ 50 ký tự/trang" chỉ chứng minh trang **có** text, không chứng minh text **đúng**. Vì vậy
+  bắt buộc có thêm đối chiếu chéo hai bản (§6.8) và danh sách "điều cần soi".
 - Nếu < 95% trang đạt (≥ 50 ký tự) thì chạy lại với `--oversample 300`, rồi báo số liệu **cả hai** lần chạy.
 - Output rà soát cho người dùng: `data/raw/<doc>-ocr.pdf` (bôi đen + Ctrl+F được),
   `data/raw/<doc>.txt`, và `data/raw/review/<doc>.md` (mỗi trang bắt đầu bằng `=== Trang N ===`). Tất cả gitignored.
@@ -95,12 +105,19 @@ NFC → thống nhất vị trí dấu thanh (hòa/hoà về một kiểu) → c
 
 | Cấp | Pattern | Ghi chú |
 |---|---|---|
-| Chương | `^Chương\s+([IVXLC]+)\b` | tiêu đề có thể nằm ở dòng sau |
+| Chương | `^Chương\s+([IVXLC]+)\b` | số La Mã phải OCR lại cục bộ, xem ghi chú dưới |
 | Mục | `^Mục\s+(\d+)\b` | |
 | Điều | `^Điều\s+(\d+[a-zđ]?)\.\s*` | `article` giữ nguyên hậu tố, vd `2a` |
-| Khoản | `^(\d+)\.\s` | chỉ tìm trong phạm vi một Điều |
+| Khoản | `^(\d+)[.,]\s` | chỉ tìm trong phạm vi một Điều; nhận cả `1.` và `1,` |
 | Điểm | `^([abcdđeghiklmnopqrstuvxy])\)\s` | chỉ tìm trong phạm vi một Khoản; luôn kèm `lead_in` của Khoản cha |
 | Bảng | dòng có ≥ 2 cột tách bằng ≥ 2 khoảng trắng / đường kẻ | `table_md` + text làm phẳng |
+
+- **Số La Mã của Chương**: OCR đọc sai (`l`, `H`, `VH`, `XIHI`…). Không được đoán. Với mỗi dòng
+  khớp `^Chương\s`, cắt vùng ảnh của đúng dòng đó ở 300 DPI rồi OCR lại bằng
+  `tesseract --psm 7 -c tessedit_char_whitelist="IVXLCDM "`. Kết quả sau đó phải tạo dãy `I..XVII`
+  liên tục, không trùng, không thiếu; lệch thì ghi lỗi vào `ingest_report.json` và dừng (PLAN §6.3).
+- **Dấu câu**: `.` bị OCR thành `,` ở khoản là lỗi hệ thống, nên regex khoản nhận `[.,]`. Không nới
+  lỏng regex Điều theo cách này (dấu `.` sau số Điều gần như luôn đọc đúng, 211/220).
 
 - Chỉ nhận là tiêu đề Điều khi số Điều **tăng liên tục** so với Điều trước; trường hợp khác ghi vào report
   (chống nhầm dòng "Điều" nằm giữa nội dung).

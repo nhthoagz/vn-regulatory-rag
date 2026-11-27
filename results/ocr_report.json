@@ -1,0 +1,87 @@
+{
+  "all_pass": true,
+  "documents": [
+    {
+      "doc_id": "18-VBHN-VPQH-2026",
+      "identity_marker": "VBHN",
+      "identity_page": 86,
+      "ok_ratio": 1.0,
+      "output": "data/raw/blld2019-18-vbhn-vpqh-2026-ocr.pdf",
+      "output_sha256": "a355822c461cfcf2319e52733889bb4319819c7eb0cd5bb73df9eed8a528ba6c",
+      "pages": 86,
+      "pages_ok": 86,
+      "pass": true,
+      "retried": false,
+      "review": "data/raw/review/blld2019-18-vbhn-vpqh-2026.md",
+      "role": "consolidated",
+      "run": {
+        "command": "ocrmypdf -l vie --rotate-pages --deskew --clean --invalidate-digital-signatures --jobs 4 --sidecar /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-18-vbhn-vpqh-2026.txt /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-18-vbhn-vpqh-2026.pdf /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-18-vbhn-vpqh-2026-ocr.pdf",
+        "exit_code": 0,
+        "seconds": 178.2,
+        "stderr_tail": [
+          "Repaired 3 JPEG image(s) corrupted by Ghostscript",
+          "",
+          "",
+          "",
+          "",
+          "Image optimization ratio: 1.06 savings: 5.5%",
+          "Total file size ratio: 1.02 savings: 1.5%",
+          "Output file is a PDF/A-2b (as expected)"
+        ]
+      },
+      "sidecar": "data/raw/blld2019-18-vbhn-vpqh-2026.txt",
+      "skipped": false,
+      "source": "data/raw/blld2019-18-vbhn-vpqh-2026.pdf",
+      "source_bytes": 38999953,
+      "source_sha256": "5a01a5b4b778b78c7bc9372e3a7270735bd98c28160604bff95db06bb3345a6f"
+    },
+    {
+      "doc_id": "45-2019-QH14",
+      "identity_marker": "45/2019/QH14",
+      "identity_page": 1,
+      "ok_ratio": 1.0,
+      "output": "data/raw/blld2019-45-2019-qh14-goc-ocr.pdf",
+      "output_sha256": "83dd0566e8607d81937bb5d8d8abdf6ac589635b156433543e955ac927f6bb59",
+      "pages": 83,
+      "pages_ok": 83,
+      "pass": true,
+      "retried": false,
+      "review": "data/raw/review/blld2019-45-2019-qh14-goc.md",
+      "role": "original",
+      "run": {
+        "command": "ocrmypdf -l vie --rotate-pages --deskew --clean --invalidate-digital-signatures --jobs 4 --sidecar /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-45-2019-qh14-goc.txt /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-45-2019-qh14-goc.pdf /mnt/e/Projects/vn-regulatory-rag/data/raw/blld2019-45-2019-qh14-goc-ocr.pdf",
+        "exit_code": 0,
+        "seconds": 104.6,
+        "stderr_tail": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Image optimization ratio: 2.55 savings: 60.7%",
+          "Total file size ratio: 0.96 savings: -4.5%",
+          "Output file is a PDF/A-2b (as expected)"
+        ]
+      },
+      "sidecar": "data/raw/blld2019-45-2019-qh14-goc.txt",
+      "skipped": false,
+      "source": "data/raw/blld2019-45-2019-qh14-goc.pdf",
+      "source_bytes": 5232503,
+      "source_sha256": "a0c0fcc3b9e040bcdcab70191f0ab95952183be94a6f5bc6424e8d3e85697139"
+    }
+  ],
+  "generated_at": "2026-11-27T09:08:54Z",
+  "settings": {
+    "invalidate_digital_signatures": true,
+    "jobs": 4,
+    "lang": "vie",
+    "min_chars": 50,
+    "min_ok_ratio": 0.95
+  },
+  "tool": {
+    "ocrmypdf": "16.13.0+dfsg1",
+    "pdftotext": "pdftotext version 26.01.0",
+    "tesseract": "tesseract 5.5.0"
+  },
+  "total_seconds": 285.0
+}
