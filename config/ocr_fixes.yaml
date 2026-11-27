@@ -1,0 +1,5 @@
+# Sửa lỗi hệ thống sau OCR. Áp theo thứ tự, CÓ VERSION để build vẫn tất định.
+# Chỉ dùng cho lỗi đã kiểm chứng lặp lại nhiều trang (xem docs/checkpoints/CP-T00b-ocr.md).
+# KHÔNG dùng file này để "viết lại" văn bản luật; nội dung luật phải giữ nguyên văn.
+version: 1
+rules: []

@@ -1,0 +1,26 @@
+# Ví dụ cho router. Regex chạy trước; kNN trên các ví dụ này chỉ là fallback.
+intents:
+  calc_overtime:
+    examples:
+      - lương 5 triệu một tháng, làm thêm 10 giờ ngày thường thì được bao nhiêu
+      - tăng ca ngày lễ tính lương như thế nào
+      - làm đêm thêm 4 giờ được trả bao nhiêu
+      - lương 20000 một giờ làm thêm giờ ban đêm ngày chủ nhật
+  calc_leave:
+    examples:
+      - làm 6 tháng thì được mấy ngày phép năm
+      - thâm niên 12 năm thì được bao nhiêu ngày nghỉ hằng năm
+      - nghỉ phép năm được hưởng bao nhiêu ngày
+      - lao động chưa thành niên được nghỉ phép mấy ngày
+  qa:
+    examples:
+      - thời gian thử việc tối đa là bao lâu
+      - khi nào được đơn phương chấm dứt hợp đồng lao động
+      - trợ cấp thôi việc tính thế nào
+      - người sử dụng lao động phải báo trước bao nhiêu ngày
+  oos:
+    examples:
+      - giá vàng hôm nay bao nhiêu
+      - thời tiết hà nội ngày mai
+      - luật hình sự quy định tội trộm cắp thế nào
+      - thủ tục đăng ký kết hôn ở đâu

@@ -1,0 +1,36 @@
+# Tham số truy xuất. Mọi thay đổi phải kèm số liệu ablation (SPEC §11).
+mode: linear # bm25 | dense | linear | rrf
+alpha: 0.7
+alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+normalization: minmax # minmax | zscore
+rrf_k: 60
+
+bm25:
+  k1: 1.5
+  b: 0.75
+  use_two_fields: true
+
+chunk:
+  level: leaf # leaf | clause | article
+  header_mode: none # none | true | placebo
+  max_tokens: 800
+
+pool:
+  bm25: 100
+  dense: 100
+  final: 10
+
+rerank:
+  enabled: false
+
+dense:
+  model: BAAI/bge-m3
+  fallback_model: intfloat/multilingual-e5-large
+  query_prefix: ""
+  passage_prefix: ""
+  batch_size: 8
+
+expand:
+  include_parent: true
+  include_exception_clauses: true
+  max_tokens: 1600

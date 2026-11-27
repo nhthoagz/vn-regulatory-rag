@@ -1,0 +1,24 @@
+# Cấu hình LLM. File này KHÔNG chứa secret: chỉ ghi tên biến môi trường.
+# Giá trị thật nằm trong .env (gitignored).
+budget:
+  max_llm_calls: 2
+
+providers:
+  A:
+    base_url_env: VN_RAG_LLM_A_BASE_URL
+    api_key_env: VN_RAG_LLM_A_API_KEY
+    model_env: VN_RAG_LLM_A_MODEL
+    default_base_url: http://127.0.0.1:11434/v1
+    default_model: null
+    temperature: 0.0
+    timeout_s: 60
+    max_retries: 2
+  B:
+    base_url_env: VN_RAG_LLM_B_BASE_URL
+    api_key_env: VN_RAG_LLM_B_API_KEY
+    model_env: VN_RAG_LLM_B_MODEL
+    default_base_url: null
+    default_model: null
+    temperature: 0.0
+    timeout_s: 90
+    max_retries: 1

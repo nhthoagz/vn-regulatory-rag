@@ -1,0 +1,9 @@
+# Ngưỡng OOS đặt trên ĐIỂM THÔ (cosine top-1, BM25 thô, logit reranker), không trên điểm fused.
+# calibrated: false cho tới khi scripts/tune_oos.py chạy trên dev (T23).
+# Không được điền số bằng tay: giá trị phải do lần hiệu chỉnh ghi ra.
+calibrated: false
+bm25_min_score: null
+dense_min_cosine: null
+rerank_min_logit: null
+margin_ratio: null
+calibration_run: null

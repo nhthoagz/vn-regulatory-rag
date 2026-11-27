@@ -1,0 +1,1 @@
+"""Script thực thi: chạy bằng `python -m scripts.<name>` để `import src` hoạt động."""

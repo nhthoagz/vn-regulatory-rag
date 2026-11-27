@@ -21,7 +21,7 @@ lint:
 	$(UV) run ruff check .
 
 leak:
-	$(UV) run python scripts/check_leak.py
+	$(UV) run python -m scripts.check_leak
 
 test:
 	$(UV) run pytest
@@ -33,14 +33,14 @@ check: lint leak
 	$(UV) run pytest -m "not realdata and not model and not llm"
 
 ocr:
-	$(UV) run python scripts/ocr.py --jobs $(OCR_JOBS)
+	$(UV) run python -m scripts.ocr --jobs $(OCR_JOBS)
 
 ocr-force:
-	$(UV) run python scripts/ocr.py --force --jobs $(OCR_JOBS)
+	$(UV) run python -m scripts.ocr --force --jobs $(OCR_JOBS)
 
 ocr-best:
-	$(UV) run python scripts/ocr.py --force --suffix=-best \
+	$(UV) run python -m scripts.ocr --force --suffix=-best \
 		--tessdata-dir $(TESSDATA_BEST) --jobs $(OCR_JOBS)
 
 ocr-metrics:
-	$(UV) run python scripts/ocr_metrics.py data/raw/*.txt
+	$(UV) run python -m scripts.ocr_metrics data/raw/*.txt

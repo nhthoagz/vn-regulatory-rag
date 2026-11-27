@@ -17,13 +17,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-import yaml
+from src.common.config import DocumentMeta, load_documents
+from src.common.paths import RAW_DIR, REPO_ROOT, RESULTS_DIR
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = REPO_ROOT / "data" / "raw"
 REVIEW_DIR = RAW_DIR / "review"
-CONFIG_PATH = REPO_ROOT / "config" / "docs.yaml"
-REPORT_PATH = REPO_ROOT / "results" / "ocr_report.json"
+REPORT_PATH = RESULTS_DIR / "ocr_report.json"
 
 MIN_CHARS = 50
 MIN_OK_RATIO = 0.95
@@ -41,14 +39,6 @@ def tool_version(args: list[str]) -> str:
     result = subprocess.run(args, capture_output=True, text=True, check=False)
     text = (result.stdout or result.stderr).strip().splitlines()
     return text[0].strip() if text else "unknown"
-
-
-def load_documents() -> list[dict[str, Any]]:
-    data = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8")) or {}
-    documents = data.get("documents") or []
-    if not documents:
-        raise SystemExit(f"no documents configured in {CONFIG_PATH}")
-    return documents
 
 
 def extract_pages(pdf: Path) -> list[str]:
@@ -134,28 +124,28 @@ def write_review(stem: str, pages: list[str]) -> Path:
 
 
 def process(
-    doc: dict[str, Any],
+    doc: DocumentMeta,
     jobs: int,
     force: bool,
     suffix: str,
     tessdata_dir: Path | None,
 ) -> dict[str, Any]:
-    src = RAW_DIR / doc["file"]
+    src = RAW_DIR / doc.file
     stem = src.stem
     dst = RAW_DIR / f"{stem}{suffix}.pdf"
     sidecar = RAW_DIR / f"{stem}{suffix}.txt"
     if not src.is_file():
-        return {"doc_id": doc["doc_id"], "error": f"missing source: {src}"}
+        return {"doc_id": doc.doc_id, "error": f"missing source: {src}"}
 
     entry: dict[str, Any] = {
-        "doc_id": doc["doc_id"],
-        "role": doc.get("role"),
+        "doc_id": doc.doc_id,
+        "role": doc.role,
         "source": src.relative_to(REPO_ROOT).as_posix(),
         "source_sha256": sha256_of(src),
         "source_bytes": src.stat().st_size,
         "output": dst.relative_to(REPO_ROOT).as_posix(),
         "sidecar": sidecar.relative_to(REPO_ROOT).as_posix(),
-        "identity_marker": doc.get("identity_marker"),
+        "identity_marker": doc.identity_marker,
         "skipped": False,
         "retried": False,
     }
@@ -181,7 +171,7 @@ def process(
         ok, ratio = quality(pages)
         entry.update({"pages": len(pages), "pages_ok": ok, "ok_ratio": ratio})
 
-    marker = (doc.get("identity_marker") or "").strip()
+    marker = (doc.identity_marker or "").strip()
     identity_page = None
     if marker:
         for number, text in enumerate(pages, start=1):
@@ -206,7 +196,7 @@ def main(argv: list[str] | None = None) -> int:
     documents = load_documents()
     if args.only:
         wanted = set(args.only)
-        documents = [doc for doc in documents if doc["doc_id"] in wanted]
+        documents = [doc for doc in documents if doc.doc_id in wanted]
         if not documents:
             return 2
 

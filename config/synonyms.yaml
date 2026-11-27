@@ -1,0 +1,45 @@
+# Mở rộng truy vấn: khóa là cụm chuẩn (chữ thường), giá trị là biến thể.
+# Chỉ các cụm thuộc miền lao động, không thêm từ đồng nghĩa mơ hồ.
+synonyms:
+  làm thêm giờ:
+    - tăng ca
+    - làm thêm
+    - làm ngoài giờ
+  nghỉ hằng năm:
+    - phép năm
+    - nghỉ phép năm
+    - nghỉ phép
+  chấm dứt hợp đồng lao động:
+    - nghỉ việc
+    - đơn phương chấm dứt hợp đồng
+    - sa thải
+  trợ cấp thôi việc:
+    - trợ cấp nghỉ việc
+  trợ cấp mất việc làm:
+    - trợ cấp thất nghiệp do doanh nghiệp chi trả
+  tai nạn lao động:
+    - tai nạn nghề nghiệp
+  bệnh nghề nghiệp:
+    - bệnh do nghề nghiệp
+  thời giờ làm việc:
+    - giờ làm việc
+    - thời gian làm việc
+  người lao động:
+    - nhân viên
+    - công nhân
+    - lao động
+  người sử dụng lao động:
+    - chủ sử dụng lao động
+    - doanh nghiệp
+    - công ty
+  tiền lương:
+    - mức lương
+    - lương
+  hợp đồng lao động:
+    - hợp đồng
+  kỷ luật lao động:
+    - xử lý kỷ luật
+  thử việc:
+    - thời gian thử việc
+  nghỉ thai sản:
+    - thai sản
