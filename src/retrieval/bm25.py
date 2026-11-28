@@ -38,6 +38,11 @@ class BM25Index:
         self.term_freqs: list[Counter[str]] = []
         self.idf: dict[str, float] = {}
 
+    @property
+    def doc_count(self) -> int:
+        """Số chunk đã index."""
+        return len(self.doc_tokens)
+
     def fit(self, documents: Iterable[str]) -> BM25Index:
         self.doc_tokens = [tokenize(document) for document in documents]
         self.doc_len = [len(tokens) for tokens in self.doc_tokens]

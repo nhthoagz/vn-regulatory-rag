@@ -19,6 +19,13 @@ dev = [
   "pytest>=8.0",
 ]
 
+[project.optional-dependencies]
+# Nhánh dense (SPEC §7) nặng nên để tuỳ chọn: `uv pip install -e .[ml]` hoặc cài tay.
+ml = [
+  "sentence-transformers>=3.0",
+  "numpy>=1.26",
+]
+
 [tool.uv]
 package = false
 

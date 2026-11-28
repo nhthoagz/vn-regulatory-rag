@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from decimal import Decimal
 from functools import lru_cache
 
@@ -19,6 +20,7 @@ app = FastAPI(title="vn-regulatory-rag", version="0.1.0")
 class AskRequest(BaseModel):
     question: str = Field(min_length=3, max_length=500)
     top_k: int = Field(default=5, ge=1, le=10)
+    mode: str = Field(default="bm25", pattern="^(bm25|dense|linear|rrf)$")
 
 
 class AskResponse(BaseModel):
@@ -42,14 +44,17 @@ class LeaveRequest(BaseModel):
     base_days: int = Field(default=0, ge=0, le=20)
 
 
-@lru_cache(maxsize=1)
-def get_pipeline() -> Pipeline:
+@lru_cache(maxsize=4)
+def get_pipeline(mode: str = "bm25") -> Pipeline:
+    """Nạp pipeline theo mode; mode khác bm25 cần numpy + model đã tải."""
     settings = load_settings()
     return Pipeline(
         chunks_path=PROCESSED_DIR / "chunks_leaf.jsonl",
         nodes_path=PROCESSED_DIR / "nodes.jsonl",
         fallback_path=INDEX_DIR / "fallback_map.json",
         default_doc_id=settings.docs.default_doc_id,
+        mode=mode,
+        dense_model=os.environ.get("DENSE_MODEL", "bge-m3"),
     )
 
 
@@ -66,7 +71,13 @@ def health() -> dict:
 
 @app.post("/ask", response_model=AskResponse)
 def ask(request: AskRequest) -> AskResponse:
-    result = get_pipeline().ask(request.question, top_k=request.top_k)
+    try:
+        pipeline = get_pipeline(request.mode)
+    except (ImportError, ValueError) as error:
+        raise HTTPException(
+            status_code=503, detail=f"mode {request.mode} chưa sẵn sàng: {error}"
+        ) from error
+    result = pipeline.ask(request.question, top_k=request.top_k)
     return AskResponse(
         answer=result.answer,
         citations=result.citations,

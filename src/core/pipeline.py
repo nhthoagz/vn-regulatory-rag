@@ -9,6 +9,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+from src.common.paths import INDEX_DIR
 from src.core import tools
 from src.core.guard import CITATION_RE, check_answer, numbers_in
 from src.core.tools import CalcError
@@ -114,6 +115,8 @@ class Pipeline:
         default_doc_id: str = "18-VBHN-VPQH-2026",
         threshold: float = DEFAULT_THRESHOLD,
         coverage_threshold: float = DEFAULT_COVERAGE,
+        mode: str = "bm25",
+        dense_model: str | None = None,
     ) -> None:
         self.chunks = load_jsonl(chunks_path)
         self.nodes = {node["node_id"]: node for node in load_jsonl(nodes_path)}
@@ -123,6 +126,29 @@ class Pipeline:
         self.threshold = threshold
         self.coverage_threshold = coverage_threshold
         self.index = BM25Index().fit([chunk["text"] for chunk in self.chunks])
+        self.mode = mode
+        self.hybrid = self._build_hybrid(mode, dense_model)
+
+    def _build_hybrid(self, mode: str, dense_model: str | None):
+        """Chỉ dựng HybridRetriever khi cần; thiếu numpy/model thì báo lỗi rõ ràng."""
+        if mode == "bm25":
+            return None
+        import hashlib
+
+        from src.retrieval.dense import DenseIndex
+        from src.retrieval.hybrid import HybridRetriever
+
+        chunk_sha = hashlib.sha256(
+            "".join(chunk["text"] for chunk in self.chunks).encode("utf-8")
+        ).hexdigest()
+        dense = DenseIndex.build(
+            texts=[chunk["text"] for chunk in self.chunks],
+            chunk_ids=[chunk["node_id"] for chunk in self.chunks],
+            model_key=(dense_model or "bge-m3"),
+            chunk_sha=chunk_sha,
+            cache_dir=INDEX_DIR,
+        )
+        return HybridRetriever(bm25=self.index, dense=dense, mode=mode)
 
     def _candidates(self, question: str, top_k: int) -> tuple[list[dict], list[str], str | None]:
         """Ứng viên cho câu hỏi, có boost theo Điều và fallback khi văn bản mặc định thiếu Điều."""

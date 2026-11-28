@@ -5,7 +5,7 @@ export PYTHONUTF8 := 1
 UV ?= uv
 T ?=
 
-.PHONY: dirs setup lint leak parse-stats build rules golden eval serve test t check ocr ocr-force ocr-best ocr-metrics
+.PHONY: dirs setup lint leak parse-stats build rules golden eval fetch-models ablate ablate-header serve test t check ocr ocr-force ocr-best ocr-metrics
 
 OCR_JOBS ?= 4
 TESSDATA_BEST ?= $(HOME)/.local/share/tessdata_best
@@ -37,6 +37,15 @@ golden:
 
 eval:
 	$(UV) run python -m scripts.eval --split all --coverage 0.85
+
+fetch-models:
+	$(UV) run python -m scripts.fetch_models
+
+ablate:
+	$(UV) run python -m scripts.ablate_retrieval
+
+ablate-header:
+	$(UV) run python -m scripts.ablate_header all
 
 serve:
 	$(UV) run uvicorn src.api.app:app --host 0.0.0.0 --port 8000
