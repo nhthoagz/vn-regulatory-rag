@@ -11,13 +11,14 @@ import hashlib
 import json
 import sys
 from collections import Counter
+from collections.abc import Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from src.common.config import DocumentMeta, load_documents
 from src.common.paths import RAW_DIR, REPO_ROOT, RESULTS_DIR
-from src.ingest.loader import load_pages
+from src.ingest.loader import PageAnomaly, load_pages
 from src.ingest.parser import ParseResult, parse_pages
 
 REPORT_PATH = RESULTS_DIR / "parse_stats.json"
@@ -38,6 +39,7 @@ def summarize(
     pdf: str,
     pdf_sha256: str,
     pages: int,
+    anomalies: Sequence[PageAnomaly] = (),
 ) -> dict[str, Any]:
     """Tóm tắt một lần parse: số liệu, Điều thiếu, cảnh báo, bất biến node_id."""
     ids = [node.node_id for node in result.nodes]
@@ -51,6 +53,15 @@ def summarize(
         "node_count": len(ids),
         "node_id_unique": len(ids) == len(set(ids)),
         "missing_articles": list(result.missing_articles),
+        "scan_page_anomalies": [
+            {
+                "kind": anomaly.kind,
+                "pdf_pages": list(anomaly.pdf_pages),
+                "printed_numbers": list(anomaly.printed_numbers),
+                "detail": anomaly.detail,
+            }
+            for anomaly in anomalies
+        ],
         "stats": dict(sorted(result.stats.items())),
         "issues": [
             {"kind": kind, "severity": severity, "count": count}
@@ -92,6 +103,7 @@ def main(argv: list[str] | None = None) -> int:
                 pdf=pdf_path.relative_to(REPO_ROOT).as_posix(),
                 pdf_sha256=sha256_of(pdf_path),
                 pages=len(loaded.pages),
+                anomalies=loaded.anomalies,
             )
         )
 

@@ -13,6 +13,9 @@ data/index/
 rules/*.yaml
 data/ingest_report.json
 
+# log và bản nháp
+logs/
+
 # model weights / binaries
 *.pt
 *.onnx

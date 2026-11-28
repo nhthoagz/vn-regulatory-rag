@@ -1,0 +1,89 @@
+{
+  "answers": {
+    "calc_correct": 12,
+    "calc_items": 12,
+    "split": "test",
+    "types": {
+      "article_lookup": {
+        "accuracy": 1.0,
+        "correct": 48,
+        "gold_cited": 48,
+        "items": 48
+      },
+      "clause_lookup": {
+        "accuracy": 1.0,
+        "correct": 16,
+        "gold_cited": 16,
+        "items": 16
+      },
+      "fallback_article": {
+        "accuracy": 1.0,
+        "correct": 8,
+        "gold_cited": 8,
+        "items": 8
+      },
+      "oos": {
+        "accuracy": 1.0,
+        "correct": 8,
+        "gold_cited": 0,
+        "items": 8
+      }
+    },
+    "violation_samples": [
+      {
+        "answer": "Không trích nguyên văn được an toàn; nguồn liên quan: [Bộ luật Lao động số 45/2019/QH14, Điều 29, Khoản 1] [Bộ luật Lao động số 45/2019/QH14, Điều 29, Khoản 4] [Bộ luật Lao động số 45/2019/QH14, Điều ",
+        "qid": "qa-029",
+        "type": "article_lookup",
+        "violations": [
+          "so_khong_co_trong_nguon: ['0']"
+        ]
+      }
+    ],
+    "violations": 1
+  },
+  "config": {
+    "coverage_threshold": 0.85,
+    "dense": "unavailable",
+    "llm": "unavailable",
+    "reranker": "unavailable"
+  },
+  "generated_at": "2026-11-28T10:26:30Z",
+  "inputs": {
+    "calc_eval": "306a0920f799b0004b4251d7dc5f5a415670a65baa7cbfa17617c1706df6ade9",
+    "chunks_leaf": "973e4ab6c31825123e144c18a1477fdfdd4bab4a2b6cbece9fc19cd86a31c389",
+    "qa_eval": "f4d1d4a66558bcf6b11a16919af116c91a3f63b4e35dd7bcddbdbae7f57b1352"
+  },
+  "retrieval": [
+    {
+      "chunks": 1603,
+      "items": 72,
+      "mrr_at_10": 0.2884,
+      "ndcg_at_10": 0.2241,
+      "p_at_5": 0.15,
+      "recall_at_10": 0.2571,
+      "split": "test",
+      "tier": "leaf"
+    },
+    {
+      "chunks": 1257,
+      "items": 72,
+      "mrr_at_10": 0.3139,
+      "ndcg_at_10": 0.2638,
+      "p_at_5": 0.1639,
+      "recall_at_10": 0.3302,
+      "split": "test",
+      "tier": "clause"
+    },
+    {
+      "chunks": 436,
+      "items": 72,
+      "mrr_at_10": 0.272,
+      "ndcg_at_10": 0.3197,
+      "p_at_5": 0.0778,
+      "recall_at_10": 0.4722,
+      "split": "test",
+      "tier": "article"
+    }
+  ],
+  "split": "test"
+}

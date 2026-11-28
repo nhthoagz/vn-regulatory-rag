@@ -7,11 +7,6 @@
       "issues": [
         {
           "count": 1,
-          "kind": "article_local_disorder",
-          "severity": "warning"
-        },
-        {
-          "count": 1,
           "kind": "article_number_gap",
           "severity": "warning"
         },
@@ -36,7 +31,7 @@
           "severity": "warning"
         },
         {
-          "count": 17,
+          "count": 16,
           "kind": "point_duplicate",
           "severity": "warning"
         }
@@ -47,18 +42,44 @@
         78,
         79
       ],
-      "node_count": 1103,
+      "node_count": 1104,
       "node_id_unique": true,
       "pages": 86,
       "pdf": "data/raw/blld2019-18-vbhn-vpqh-2026-ocr.pdf",
       "pdf_sha256": "a355822c461cfcf2319e52733889bb4319819c7eb0cd5bb73df9eed8a528ba6c",
       "role": "consolidated",
+      "scan_page_anomalies": [
+        {
+          "detail": "hai trang bị đảo thứ tự trong bản scan; đã sắp lại theo số trang in",
+          "kind": "swapped_printed_pages",
+          "pdf_pages": [
+            16,
+            15
+          ],
+          "printed_numbers": [
+            15,
+            16
+          ]
+        },
+        {
+          "detail": "thiếu trang in [33, 34] trong bản scan",
+          "kind": "missing_printed_pages",
+          "pdf_pages": [
+            32,
+            33
+          ],
+          "printed_numbers": [
+            32,
+            35
+          ]
+        }
+      ],
       "stats": {
         "article": 216,
         "article_gap_missing": 4,
         "chapter": 17,
         "clause": 595,
-        "point": 252,
+        "point": 253,
         "preamble_lines": 14,
         "section": 23
       }
@@ -110,6 +131,80 @@
       "pdf": "data/raw/blld2019-45-2019-qh14-goc-ocr.pdf",
       "pdf_sha256": "83dd0566e8607d81937bb5d8d8abdf6ac589635b156433543e955ac927f6bb59",
       "role": "original",
+      "scan_page_anomalies": [
+        {
+          "detail": "số trang in nhảy từ 50 sang 31; nghi OCR đọc sai số trang",
+          "kind": "printed_number_jump_unexplained",
+          "pdf_pages": [
+            50,
+            51
+          ],
+          "printed_numbers": [
+            50,
+            31
+          ]
+        },
+        {
+          "detail": "số trang in nhảy từ 33 sang 54; nghi OCR đọc sai số trang",
+          "kind": "printed_number_jump_unexplained",
+          "pdf_pages": [
+            53,
+            54
+          ],
+          "printed_numbers": [
+            33,
+            54
+          ]
+        },
+        {
+          "detail": "số trang in nhảy từ 56 sang 37; nghi OCR đọc sai số trang",
+          "kind": "printed_number_jump_unexplained",
+          "pdf_pages": [
+            56,
+            57
+          ],
+          "printed_numbers": [
+            56,
+            37
+          ]
+        },
+        {
+          "detail": "số trang in nhảy từ 37 sang 58; nghi OCR đọc sai số trang",
+          "kind": "printed_number_jump_unexplained",
+          "pdf_pages": [
+            57,
+            58
+          ],
+          "printed_numbers": [
+            37,
+            58
+          ]
+        },
+        {
+          "detail": "số trang in nhảy từ 62 sang 3; nghi OCR đọc sai số trang",
+          "kind": "printed_number_jump_unexplained",
+          "pdf_pages": [
+            62,
+            63
+          ],
+          "printed_numbers": [
+            62,
+            3
+          ]
+        },
+        {
+          "detail": "số trang in nhảy từ 3 sang 64; nghi OCR đọc sai số trang",
+          "kind": "printed_number_jump_unexplained",
+          "pdf_pages": [
+            63,
+            64
+          ],
+          "printed_numbers": [
+            3,
+            64
+          ]
+        }
+      ],
       "stats": {
         "article": 220,
         "article_gap_missing": 0,
@@ -121,5 +216,5 @@
       }
     }
   ],
-  "generated_at": "2026-11-27T19:29:00Z"
+  "generated_at": "2026-11-27T23:58:16Z"
 }

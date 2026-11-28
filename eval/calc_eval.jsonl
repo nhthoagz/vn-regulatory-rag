@@ -1,0 +1,30 @@
+{"expected_amount": 150000, "hourly_wage": 50000, "hours": 2, "qid": "calc-001", "question": "Làm thêm 2 giờ vào ngày thường với lương giờ 50000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_weekday"}
+{"expected_amount": 360000, "hourly_wage": 60000, "hours": 4, "qid": "calc-002", "question": "Làm thêm 4 giờ vào ngày thường với lương giờ 60000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_weekday"}
+{"expected_amount": 960000, "hourly_wage": 80000, "hours": 8, "qid": "calc-003", "question": "Làm thêm 8 giờ vào ngày thường với lương giờ 80000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_weekday"}
+{"expected_amount": 200000, "hourly_wage": 50000, "hours": 2, "qid": "calc-004", "question": "Làm thêm 2 giờ vào ngày nghỉ hằng tuần với lương giờ 50000 đồng thì được bao nhiêu?", "split": "test", "type": "calc_weekend"}
+{"expected_amount": 480000, "hourly_wage": 60000, "hours": 4, "qid": "calc-005", "question": "Làm thêm 4 giờ vào ngày nghỉ hằng tuần với lương giờ 60000 đồng thì được bao nhiêu?", "split": "test", "type": "calc_weekend"}
+{"expected_amount": 1280000, "hourly_wage": 80000, "hours": 8, "qid": "calc-006", "question": "Làm thêm 8 giờ vào ngày nghỉ hằng tuần với lương giờ 80000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_weekend"}
+{"expected_amount": 300000, "hourly_wage": 50000, "hours": 2, "qid": "calc-007", "question": "Làm thêm 2 giờ vào ngày lễ với lương giờ 50000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_holiday"}
+{"expected_amount": 720000, "hourly_wage": 60000, "hours": 4, "qid": "calc-008", "question": "Làm thêm 4 giờ vào ngày lễ với lương giờ 60000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_holiday"}
+{"expected_amount": 1920000, "hourly_wage": 80000, "hours": 8, "qid": "calc-009", "question": "Làm thêm 8 giờ vào ngày lễ với lương giờ 80000 đồng thì được bao nhiêu?", "split": "test", "type": "calc_holiday"}
+{"expected_amount": 30000, "hourly_wage": 50000, "hours": 2, "qid": "calc-010", "question": "Làm thêm 2 giờ vào ban đêm với lương giờ 50000 đồng thì được bao nhiêu?", "split": "test", "type": "calc_night"}
+{"expected_amount": 72000, "hourly_wage": 60000, "hours": 4, "qid": "calc-011", "question": "Làm thêm 4 giờ vào ban đêm với lương giờ 60000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_night"}
+{"expected_amount": 192000, "hourly_wage": 80000, "hours": 8, "qid": "calc-012", "question": "Làm thêm 8 giờ vào ban đêm với lương giờ 80000 đồng thì được bao nhiêu?", "split": "dev", "type": "calc_night"}
+{"expected_days": 12, "qid": "calc-013", "question": "Làm việc 1 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 1}
+{"expected_days": 12, "qid": "calc-014", "question": "Làm việc 2 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 2}
+{"expected_days": 12, "qid": "calc-015", "question": "Làm việc 3 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 3}
+{"expected_days": 12, "qid": "calc-016", "question": "Làm việc 4 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 4}
+{"expected_days": 13, "qid": "calc-017", "question": "Làm việc 5 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 5}
+{"expected_days": 13, "qid": "calc-018", "question": "Làm việc 6 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 6}
+{"expected_days": 13, "qid": "calc-019", "question": "Làm việc 7 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 7}
+{"expected_days": 13, "qid": "calc-020", "question": "Làm việc 8 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 8}
+{"expected_days": 13, "qid": "calc-021", "question": "Làm việc 9 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 9}
+{"expected_days": 14, "qid": "calc-022", "question": "Làm việc 10 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 10}
+{"expected_days": 14, "qid": "calc-023", "question": "Làm việc 11 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 11}
+{"expected_days": 14, "qid": "calc-024", "question": "Làm việc 12 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 12}
+{"expected_days": 14, "qid": "calc-025", "question": "Làm việc 13 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 13}
+{"expected_days": 14, "qid": "calc-026", "question": "Làm việc 14 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 14}
+{"expected_days": 15, "qid": "calc-027", "question": "Làm việc 15 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 15}
+{"expected_days": 15, "qid": "calc-028", "question": "Làm việc 16 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "dev", "type": "calc_leave", "years": 16}
+{"expected_days": 15, "qid": "calc-029", "question": "Làm việc 17 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 17}
+{"expected_days": 15, "qid": "calc-030", "question": "Làm việc 18 năm thì được nghỉ hằng năm bao nhiêu ngày?", "split": "test", "type": "calc_leave", "years": 18}

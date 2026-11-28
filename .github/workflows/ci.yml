@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          python-version: "3.11"
+      - name: Cài dependency
+        run: uv sync --frozen || uv sync
+      - name: Lint
+        run: uv run ruff check .
+      - name: Kiểm leak
+        run: uv run python -m scripts.check_leak
+      - name: Test nhanh (không cần PDF/model)
+        run: uv run pytest -m "not realdata and not model and not llm"
