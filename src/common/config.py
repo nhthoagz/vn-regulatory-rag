@@ -15,6 +15,8 @@ Role = Literal["original", "consolidated"]
 HeaderMode = Literal["none", "true", "placebo"]
 ChunkLevel = Literal["leaf", "clause", "article"]
 RetrievalMode = Literal["bm25", "dense", "linear", "rrf"]
+NodeStatus = Literal["active", "superseded"]
+EffectiveKind = Literal["in_document", "derived_from_amending_law"]
 
 
 class DocumentMeta(BaseModel):
@@ -27,6 +29,8 @@ class DocumentMeta(BaseModel):
     effective_from: date | None = None
     expected_counts: dict[str, int] | None = None
     identity_marker: str | None = None
+    effective_kind: EffectiveKind = "in_document"
+    status: NodeStatus = "active"
 
     @field_validator("file")
     @classmethod

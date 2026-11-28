@@ -1,22 +1,30 @@
 # Metadata của văn bản nguồn.
 # Giá trị nào chưa xác minh được từ text OCR thì để null và điền sau bằng câu trích dẫn
 # (SPEC §12). Không được đoán.
-as_of: null
+as_of: 2026-11-27
 default_doc_id: "18-VBHN-VPQH-2026"
 
 documents:
   - doc_id: "18-VBHN-VPQH-2026"
     file: "blld2019-18-vbhn-vpqh-2026.pdf"
     role: consolidated
-    title: null
-    effective_from: null
-    expected_counts: null
+    title: "Bộ luật Lao động số 45/2019/QH14"
+    effective_from: 2026-07-01
+    effective_kind: derived_from_amending_law
+    status: active
+    expected_counts:
+      chapter: 17
+      article: 220
     identity_marker: "VBHN"
 
   - doc_id: "45-2019-QH14"
     file: "blld2019-45-2019-qh14-goc.pdf"
     role: original
-    title: null
-    effective_from: null
-    expected_counts: null
+    title: "Bộ luật Lao động số 45/2019/QH14"
+    effective_from: 2021-01-01
+    effective_kind: in_document
+    status: superseded
+    expected_counts:
+      chapter: 17
+      article: 220
     identity_marker: "45/2019/QH14"

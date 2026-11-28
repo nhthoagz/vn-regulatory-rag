@@ -5,7 +5,7 @@ export PYTHONUTF8 := 1
 UV ?= uv
 T ?=
 
-.PHONY: dirs setup lint leak parse-stats test t check ocr ocr-force ocr-best ocr-metrics
+.PHONY: dirs setup lint leak parse-stats build rules golden eval serve test t check ocr ocr-force ocr-best ocr-metrics
 
 OCR_JOBS ?= 4
 TESSDATA_BEST ?= $(HOME)/.local/share/tessdata_best
@@ -25,6 +25,21 @@ leak:
 
 parse-stats:
 	$(UV) run python -m scripts.parse_stats
+
+build:
+	$(UV) run python -m scripts.build_index
+
+rules:
+	$(UV) run python -m scripts.extract_rules
+
+golden:
+	$(UV) run python -m scripts.make_golden
+
+eval:
+	$(UV) run python -m scripts.eval --split all --coverage 0.85
+
+serve:
+	$(UV) run uvicorn src.api.app:app --host 0.0.0.0 --port 8000
 
 test:
 	$(UV) run pytest

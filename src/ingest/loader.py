@@ -40,12 +40,24 @@ class Page:
 
 
 @dataclass(frozen=True, slots=True)
+class PageAnomaly:
+    """Bất thường thứ tự hoặc đánh số trang in phát hiện khi đọc bản scan."""
+
+    kind: str
+    pdf_pages: tuple[int, ...]
+    printed_numbers: tuple[int | None, ...]
+    detail: str
+
+
+@dataclass(frozen=True, slots=True)
 class LoadResult:
     pdf: Path
     pages: tuple[Page, ...]
     lines_total: int
     lines_dropped: int
     dropped_texts: tuple[str, ...]
+    page_order: tuple[int, ...] = ()
+    anomalies: tuple[PageAnomaly, ...] = ()
 
 
 def normalize_running_text(text: str) -> str:
@@ -156,6 +168,101 @@ def strip_running_heads(
     )
 
 
+def _numbers_with_top(lines: list[Line]) -> list[tuple[float, int]]:
+    pairs: list[tuple[float, int]] = []
+    for line in lines:
+        match = DIGIT_RE.search(line.text)
+        if match:
+            pairs.append((float(line.top), int(match.group())))
+    return pairs
+
+
+def detect_printed_number(
+    page: Page,
+    header_frac: float = DEFAULT_HEADER_FRAC,
+    footer_frac: float = DEFAULT_FOOTER_FRAC,
+) -> int | None:
+    """Số trang **in** ở dải đáy (ưu tiên) hoặc dải đỉnh; bỏ qua số trong nội dung."""
+    footer = _numbers_with_top(
+        [line for line in _band_lines(page, footer_frac, False) if is_page_number(line.text)]
+    )
+    if footer:
+        return max(footer)[1]
+    header = _numbers_with_top(
+        [line for line in _band_lines(page, header_frac, True) if is_page_number(line.text)]
+    )
+    if header:
+        return min(header)[1]
+    return None
+
+
+def reorder_by_printed_numbers(pages: list[Page]) -> tuple[list[Page], list[PageAnomaly]]:
+    """Sắp lại các trang bị đảo thứ tự trong bản scan và ghi lại bất thường.
+
+    Chỉ đảo khi hai trang liền nhau có số trang in ngược nhau đúng 1 đơn vị và các trang
+    xung quanh vẫn tăng, để không sửa nhầm khi OCR đọc sai số trang. Trang không đọc được
+    số thì bỏ qua, không đoán.
+    """
+    if len(pages) < 2:
+        return pages, []
+
+    printed = [detect_printed_number(page) for page in pages]
+    order = list(range(len(pages)))
+    anomalies: list[PageAnomaly] = []
+
+    for index in range(len(order) - 1):
+        left = printed[order[index]]
+        right = printed[order[index + 1]]
+        if left is None or right is None or left != right + 1:
+            continue
+        before = printed[order[index - 1]] if index > 0 else None
+        after = printed[order[index + 2]] if index + 2 < len(order) else None
+        if before is not None and before >= right:
+            continue
+        if after is not None and after <= left:
+            continue
+        order[index], order[index + 1] = order[index + 1], order[index]
+        anomalies.append(
+            PageAnomaly(
+                kind="swapped_printed_pages",
+                pdf_pages=(pages[order[index]].number, pages[order[index + 1]].number),
+                printed_numbers=(printed[order[index]], printed[order[index + 1]]),
+                detail="hai trang bị đảo thứ tự trong bản scan; đã sắp lại theo số trang in",
+            )
+        )
+
+    reordered = [pages[index] for index in order]
+    numbers = [printed[index] for index in order]
+    for index in range(len(numbers) - 1):
+        first, second = numbers[index], numbers[index + 1]
+        if first is None or second is None:
+            continue
+        gap = second - first
+        if gap == 1:
+            continue
+        pair = (reordered[index].number, reordered[index + 1].number)
+        if 1 < gap <= 3:
+            missing = list(range(first + 1, second))
+            anomalies.append(
+                PageAnomaly(
+                    kind="missing_printed_pages",
+                    pdf_pages=pair,
+                    printed_numbers=(first, second),
+                    detail=f"thiếu trang in {missing} trong bản scan",
+                )
+            )
+        else:
+            anomalies.append(
+                PageAnomaly(
+                    kind="printed_number_jump_unexplained",
+                    pdf_pages=pair,
+                    printed_numbers=(first, second),
+                    detail=f"số trang in nhảy từ {first} sang {second}; nghi OCR đọc sai số trang",
+                )
+            )
+    return reordered, anomalies
+
+
 def load_pages(
     pdf_path: Path,
     header_frac: float = DEFAULT_HEADER_FRAC,
@@ -164,6 +271,7 @@ def load_pages(
 ) -> LoadResult:
     """Đọc PDF và bỏ header/footer, trả kèm số liệu để ghi vào report."""
     pages = extract_pages(pdf_path)
+    pages, anomalies = reorder_by_printed_numbers(pages)
     result = strip_running_heads(pages, header_frac, footer_frac, min_page_ratio)
     return LoadResult(
         pdf=pdf_path,
@@ -171,4 +279,6 @@ def load_pages(
         lines_total=result.lines_total,
         lines_dropped=result.lines_dropped,
         dropped_texts=result.dropped_texts,
+        page_order=tuple(page.number for page in result.pages),
+        anomalies=tuple(anomalies),
     )

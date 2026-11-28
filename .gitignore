@@ -9,6 +9,10 @@ data/raw/*
 data/processed/
 data/index/
 
+# sinh tự động từ text luật: rule chứa câu trích nguyên văn, không đẩy lên repo (rule 4)
+rules/*.yaml
+data/ingest_report.json
+
 # model weights / binaries
 *.pt
 *.onnx

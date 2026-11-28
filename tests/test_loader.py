@@ -5,9 +5,11 @@ import pytest
 from src.ingest.loader import (
     Line,
     Page,
+    detect_printed_number,
     is_page_number,
     load_pages,
     normalize_running_text,
+    reorder_by_printed_numbers,
     strip_running_heads,
 )
 
@@ -106,3 +108,60 @@ def test_load_pages_reads_ocr_pdf_without_running_heads(ocr_pdfs) -> None:
     first = result.pages[0]
     assert first.lines
     assert all(line.page == 1 for line in first.lines)
+
+
+def test_printed_number_is_read_from_footer() -> None:
+    page = make_page(5, body=("Điều 5. Nội dung",), footer="5")
+    assert detect_printed_number(page) == 5
+    assert detect_printed_number(make_page(5, body=("Điều 5. Nội dung",))) is None
+    # Số nằm trong nội dung không được coi là số trang in.
+    assert detect_printed_number(make_page(5, body=("5",))) is None
+
+
+def test_reorder_swaps_pages_with_reversed_printed_numbers() -> None:
+    pages = [
+        make_page(14, body=("Điều 34. Nội dung",), footer="14"),
+        make_page(15, body=("Điều 36. Nội dung",), footer="16"),
+        make_page(16, body=("Điều 35. Nội dung",), footer="15"),
+        make_page(17, body=("Điều 37. Nội dung",), footer="17"),
+    ]
+    ordered, anomalies = reorder_by_printed_numbers(pages)
+    assert [page.number for page in ordered] == [14, 16, 15, 17]
+    assert [anomaly.kind for anomaly in anomalies] == ["swapped_printed_pages"]
+    assert anomalies[0].printed_numbers == (15, 16)
+
+
+def test_missing_printed_pages_are_reported() -> None:
+    pages = [
+        make_page(32, body=("Điều 75.",), footer="32"),
+        make_page(33, body=("Điều 80.",), footer="35"),
+    ]
+    _, anomalies = reorder_by_printed_numbers(pages)
+    assert [anomaly.kind for anomaly in anomalies] == ["missing_printed_pages"]
+    assert anomalies[0].printed_numbers == (32, 35)
+    assert anomalies[0].detail == "thiếu trang in [33, 34] trong bản scan"
+
+
+def test_large_printed_number_jump_is_flagged_as_ocr_noise() -> None:
+    pages = [make_page(21, footer="21"), make_page(22, footer="2")]
+    _, anomalies = reorder_by_printed_numbers(pages)
+    assert [anomaly.kind for anomaly in anomalies] == ["printed_number_jump_unexplained"]
+
+
+@pytest.mark.realdata
+def test_load_pages_reports_scan_page_anomalies(ocr_pdfs) -> None:
+    vbhn = next(path for path in ocr_pdfs if "vbhn" in path.name)
+    original = next(path for path in ocr_pdfs if "45-2019" in path.name)
+
+    vbhn_result = load_pages(vbhn)
+    kinds = [anomaly.kind for anomaly in vbhn_result.anomalies]
+    assert "swapped_printed_pages" in kinds
+    missing = next(a for a in vbhn_result.anomalies if a.kind == "missing_printed_pages")
+    assert missing.printed_numbers == (32, 35)
+
+    original_result = load_pages(original)
+    assert not [
+        anomaly
+        for anomaly in original_result.anomalies
+        if anomaly.kind == "missing_printed_pages"
+    ]
