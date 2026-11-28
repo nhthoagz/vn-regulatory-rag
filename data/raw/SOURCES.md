@@ -31,7 +31,11 @@ sha256sum data/raw/*.pdf   # phải khớp bảng trên
 ## 3. Trạng thái xác nhận
 
 - sha256 nguồn và bản copy **khớp** cho cả hai file (đã đo).
-- Danh tính hai file (file nào là bản gốc, file nào là bản hợp nhất) mới suy ra từ metadata
-  (kích thước, ngày tạo, phần mềm scan), **chưa** xác nhận bằng nội dung.
-- Xác nhận nội dung là gate của T00b: bản gốc phải chứa `45/2019/QH14`, bản hợp nhất phải chứa `VBHN`.
-  Nếu không khớp → dừng và báo người dùng (PLAN §6.1).
+- Danh tính hai file **đã xác nhận bằng nội dung** (T00b), ghi trong `results/ocr_report.json`:
+  - bản gốc phát hiện marker `45/2019/QH14` ở trang pdf 1 (`identity_pages: [1]`);
+  - bản hợp nhất phát hiện marker `VBHN` ở trang pdf 86, tức khối chữ ký `Số: 18/VBHN-VPQH`
+    (`identity_pages: [86]`). Trang 1 của bản hợp nhất **cũng** chứa `45/2019/QH14` (tên luật gốc),
+    nên `45/2019/QH14` không dùng được để phân biệt hai file.
+- OCR đạt: bản gốc 83/83 trang, bản hợp nhất 86/86 trang (xem `results/ocr_report.json`).
+- Sau OCR còn phát hiện khuyết tật nguồn: bản hợp nhất **mất 2 trang in (33–34)** nên thiếu
+  Điều 76–79, và **đảo trang in 15/16**. Chi tiết + cách xử lý: `docs/FINAL_REPORT.md` §1.

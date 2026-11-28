@@ -2,12 +2,28 @@
 
 ## 0. Trạng thái hiện tại
 
+> **Ghi chú lịch sử (trước T00).** Các gạch đầu dòng dưới đây là ảnh chụp lúc bắt đầu dự án.
+> Trạng thái **hiện tại** xem §0.1 ngay sau đây; số liệu chi tiết ở `docs/FINAL_REPORT.md`.
+
 - Thư mục `E:\Projects\vn-regulatory-rag` (WSL: `/mnt/e/Projects/vn-regulatory-rag`) **đã được người dùng tạo**, đang trống.
   Không cần `mkdir` cho thư mục gốc; chỉ tạo các thư mục con trong T00.
 - Tên repo GitHub: `nhthoagz/vn-regulatory-rag`, **public**.
 - Hai file PDF luật nằm ở `E:\Projects\` (tên đã được người dùng đặt đúng theo SPEC §2).
   Chỉ **COPY** sang `data/raw/`, không move, không đổi tên.
 - Ảnh trong PDF là ảnh scan, không có text layer → phải OCR trước khi parse (T00b).
+
+### 0.1 Trạng thái thực tế (cập nhật 2026-11-28)
+
+- Repo public đã có commit; tag đã gắn: `cp1-ingest`, `cp2-pipeline`.
+- OCR xong: bản gốc 83/83 trang, bản hợp nhất 86/86 trang; danh tính hai file đã xác nhận bằng nội dung.
+- Ingest xong: bản gốc 17 Chương / 220 Điều; bản hợp nhất 17 Chương / 216 Điều thiếu `[76, 77, 78, 79]`
+  (nguồn mất trang in 33–34), 0 lỗi parse, `node_id` duy nhất 100%. Chunk 3 tầng: 1603 / 1257 / 436.
+- Có `rules/*.yaml` sinh từ text (13 rule, mỗi rule có câu trích nguyên văn), BM25 + guard + API FastAPI,
+  bộ đề 200 câu + 30 case, ablation header.
+- Số liệu và sha256 của từng artifact: `docs/FINAL_REPORT.md`. Không chép số vào đây để tránh lệch.
+- Còn lại (đang làm): dense embedding + fusion + ablation đầy đủ, LLM client/agent, OOS bảng FPR,
+  tài liệu bàn giao. `rules/*.yaml`, `data/processed/`, `data/index/`, `data/ingest_report.json` không commit
+  vì chứa text luật — tái tạo bằng `make rules` và `make build`.
 
 ## 1. Chuẩn bị một lần (việc của người dùng, trước T00b)
 
