@@ -60,6 +60,29 @@ Recall/P@5 mức node bị phạt; chất lượng trả lời thật đo ở `g
 true ≫ none/placebo phần lớn vì câu hỏi có chứa "Điều N" — header giúp khớp đúng số Điều; đây là
 tác dụng thật của header nhưng không chứng minh header giúp hiểu ngữ nghĩa.
 
+## 3b. Ablation retrieval đầy đủ: BM25 vs dense vs fusion (leaf, 180 câu)
+
+`results/retrieval_ablation.json` (sha256 ở §7)
+
+| Hệ | P@5 | R@10 | nDCG@10 | MRR@10 |
+|---|---|---|---|---|
+| BM25 | 0.1389 | 0.2554 | 0.2161 | 0.2615 |
+| bge-m3 dense | 0.1078 | 0.1786 | 0.1498 | 0.2328 |
+| bge-m3 linear | 0.1378 | 0.2647 | 0.2205 | 0.3230 |
+| bge-m3 rrf | 0.1067 | 0.1964 | 0.1727 | 0.2726 |
+| e5-large dense | 0.1022 | 0.1890 | 0.1574 | 0.2393 |
+| **e5-large linear** | **0.1522** | **0.2879** | **0.2334** | **0.3273** |
+| e5-large rrf | 0.1356 | 0.2103 | 0.1980 | 0.3152 |
+
+Đọc số cho đúng:
+- **Dense đơn lẻ kém BM25** trên corpus nhỏ, miền hẹp này — vì phần lớn câu hỏi chứa đúng số Điều
+  ("Điều 98 …") và BM25 khớp từ khoá rất mạnh. Đây là kết quả thật, không phải lỗi cấu hình.
+- **Fusion linear tốt nhất**: e5-large + BM25 = P@5 0.1522 (+9.6% so BM25), R@10 0.2879 (+12.7%),
+  nDCG@10 0.2334 (+8.0%), MRR@10 0.3273 (+25.2%). RRF kém linear ở thiết lập này.
+- Chưa có reranker; chưa tune `alpha` (đang 0.5) và chưa tune `max_seq_length` (512, `truncated`
+  ghi trong report).
+- Đã kiểm serving: `POST /ask` với `mode=bm25` và `mode=linear` đều trả 200, 5 node, 0 vi phạm guard.
+
 ## 4. Đã làm
 
 - Ingest: pdfplumber, tách header/footer, sửa thứ tự trang, parse Chương/Mục/Điều/Khoản/Điểm,
@@ -72,13 +95,13 @@ tác dụng thật của header nhưng không chứng minh header giúp hiểu n
 
 ## 5. Chưa làm (lý do thật, không tô hồng)
 
-- **Dense** (bge-m3 / multilingual-e5) + **reranker** + **fusion RRF**: `~/.cache/huggingface` rỗng,
-  chưa có `torch`; tải 1.1–2.2 GB model + embed CPU vượt ngân sách phiên. Chưa có số dense.
-- **LLM viết câu trả lời**: chưa có endpoint (`ollama` chưa cài, `.env` chưa có key) nên câu trả lời
-  là trích nguyên văn (extractive).
-- **Gradio UI** (§10): chưa có (demo bằng `curl`/Swagger `/docs`).
-- Chưa làm: mở rộng cross-reference, bảng calibration OOS đầy đủ, ablation chunk-level theo
-  recall/MRR đầy đủ cho `clause`/`article` ở mức câu trả lời, human review bộ đề.
+- **Dense**: ĐÃ làm (bge-m3 + multilingual-e5-large, cache theo `chunk_sha`, embed CPU) + fusion
+  `linear`/`rrf`; số ở §3b. **Reranker cross-encoder**: chưa (thêm ~1.1 GB model, chưa có ngân sách).
+- **LLM viết câu trả lời**: client OpenAI-compatible đã có (`src/core/llm.py`, 4 test) nhưng **chưa bật**
+  vì `sudo` cần mật khẩu để cài Ollama → không cài phi tương tác được. Câu trả lời hiện là trích nguyên văn.
+- **Gradio UI** (§10): có scaffold `src/ui/gradio_app.py` (import lazy), chưa cài `gradio` nên chưa chạy.
+- Chưa làm: mở rộng cross-reference, bảng calibration OOS đầy đủ (mới quét ngưỡng trên dev), tune
+  `alpha`/rerank, human review bộ đề.
 - Docker/CI mới ở mức file, **chưa chạy thật** (docker chưa cài trên máy).
 
 ## 6. Tái tạo
@@ -94,3 +117,20 @@ make serve    # http://127.0.0.1:8000/docs
 
 `rules/*.yaml`, `data/processed/`, `data/index/`, `data/ingest_report.json` không commit vì chứa
 text luật (rule 4) — tái tạo bằng `make rules` và `make build`.
+
+## 7. Danh mục artifact + sha256
+
+| Artifact | sha256 |
+|---|---|
+| `results/parse_stats.json` | `0f9f161960d467f42b2f5c0b0076969b5d584310218a0d9c5b61105c55bcc84a` |
+| `data/ingest_report.json` | `afd899fa04dc838ebbcf5fa9362c9988ced2df6747f051d77f1a86a309378a84` |
+| `eval/qa_eval.jsonl` | `f4d1d4a66558bcf6b11a16919af116c91a3f63b4e35dd7bcddbdbae7f57b1352` |
+| `eval/calc_eval.jsonl` | `306a0920f799b0004b4251d7dc5f5a415670a65baa7cbfa17617c1706df6ade9` |
+| `results/eval_report.json` | `f8555d42b97f1aa1488c09e81bd518a4fdfa232edb00bc26dd820359d8268414` |
+| `results/eval_dev.json` | `c23db9bf4594d1fe217787a7c8981bcae924cb475a0e9211e47d82d3bf51368f` |
+| `results/eval_test.json` | `6b73c65c853a0741d4dd1183381ccf4baa65622ab283efaa6e3c4fecb282331a` |
+| `results/header_ablation.json` | `09fa6a1a35cf7c811bb723fda0830c6f495895c309f17971cec88b1dd19382d7` |
+| `results/retrieval_ablation.json` | `071cc65497126e77bdd6c89da510b5d5194d8a709e14eff76bba8d38aac13758` |
+
+Model đã tải (không commit): `BAAI/bge-m3`, `intfloat/multilingual-e5-large` trong `HF_HOME`.
+Cache dense: `data/index/dense-{bge-m3,e5-large}-973e4ab6c318.npy` (1603×1024 float32, ~6.6 MB mỗi file).

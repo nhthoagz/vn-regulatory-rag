@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from dataclasses import dataclass, field
@@ -119,6 +120,7 @@ class Pipeline:
         dense_model: str | None = None,
     ) -> None:
         self.chunks = load_jsonl(chunks_path)
+        self.chunks_path = chunks_path
         self.nodes = {node["node_id"]: node for node in load_jsonl(nodes_path)}
         self.fallback = json.loads(fallback_path.read_text(encoding="utf-8"))
         self.rules = tools.load_rules()
@@ -133,14 +135,11 @@ class Pipeline:
         """Chỉ dựng HybridRetriever khi cần; thiếu numpy/model thì báo lỗi rõ ràng."""
         if mode == "bm25":
             return None
-        import hashlib
-
         from src.retrieval.dense import DenseIndex
         from src.retrieval.hybrid import HybridRetriever
 
-        chunk_sha = hashlib.sha256(
-            "".join(chunk["text"] for chunk in self.chunks).encode("utf-8")
-        ).hexdigest()
+        # Cùng khoá cache với scripts/ablate_retrieval.py: sha256 của file chunk.
+        chunk_sha = hashlib.sha256(self.chunks_path.read_bytes()).hexdigest()
         dense = DenseIndex.build(
             texts=[chunk["text"] for chunk in self.chunks],
             chunk_ids=[chunk["node_id"] for chunk in self.chunks],

@@ -46,5 +46,5 @@ kết quả này chứng minh header giúp khớp **số Điều**, không chứ
 
 ## 4. Kết luận
 
-**PASS** cho nhánh BM25/extractive. Chưa có dense/reranker/fusion nên chưa thể kết luận
-"hybrid tốt hơn BM25" — cần nhánh B (embedding) hoàn tất trước khi chốt CP3.
+**PASS** cho nhánh BM25/extractive. Nhánh hybrid (dense + fusion) đã đo xong và tốt hơn BM25 —
+xem `docs/checkpoints/CP3-hybrid.md`.

@@ -1,0 +1,67 @@
+{
+  "chunks": 1603,
+  "chunks_sha256": "973e4ab6c31825123e144c18a1477fdfdd4bab4a2b6cbece9fc19cd86a31c389",
+  "generated_at": "2026-11-28T11:20:38Z",
+  "items": 180,
+  "qa_sha256": "f4d1d4a66558bcf6b11a16919af116c91a3f63b4e35dd7bcddbdbae7f57b1352",
+  "results": {
+    "bge-m3": {
+      "dense": {
+        "items": 180,
+        "mrr_at_10": 0.2328,
+        "ndcg_at_10": 0.1498,
+        "p_at_5": 0.1078,
+        "recall_at_10": 0.1786
+      },
+      "dim": 1024,
+      "linear": {
+        "items": 180,
+        "mrr_at_10": 0.323,
+        "ndcg_at_10": 0.2205,
+        "p_at_5": 0.1378,
+        "recall_at_10": 0.2647
+      },
+      "rrf": {
+        "items": 180,
+        "mrr_at_10": 0.2726,
+        "ndcg_at_10": 0.1727,
+        "p_at_5": 0.1067,
+        "recall_at_10": 0.1964
+      },
+      "truncated": 2
+    },
+    "bm25": {
+      "items": 180,
+      "mrr_at_10": 0.2615,
+      "ndcg_at_10": 0.2161,
+      "p_at_5": 0.1389,
+      "recall_at_10": 0.2554
+    },
+    "e5-large": {
+      "dense": {
+        "items": 180,
+        "mrr_at_10": 0.2393,
+        "ndcg_at_10": 0.1574,
+        "p_at_5": 0.1022,
+        "recall_at_10": 0.189
+      },
+      "dim": 1024,
+      "linear": {
+        "items": 180,
+        "mrr_at_10": 0.3273,
+        "ndcg_at_10": 0.2334,
+        "p_at_5": 0.1522,
+        "recall_at_10": 0.2879
+      },
+      "rrf": {
+        "items": 180,
+        "mrr_at_10": 0.3152,
+        "ndcg_at_10": 0.198,
+        "p_at_5": 0.1356,
+        "recall_at_10": 0.2103
+      },
+      "truncated": 2
+    }
+  },
+  "tier": "leaf"
+}
